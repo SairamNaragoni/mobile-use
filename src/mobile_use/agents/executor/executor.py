@@ -4,6 +4,7 @@ from jinja2 import Template
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.messages.ai import AIMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_ollama import ChatOllama
 from mobile_use.context import MobileUseContext
 from mobile_use.graph.state import State
 from mobile_use.services.llm import get_llm
@@ -67,8 +68,8 @@ class ExecutorNode:
             "tool_choice": "auto",  # automatically select a tool call or none
         }
 
-        # ChatGoogleGenerativeAI does not support the "parallel_tool_calls" keyword
-        if not isinstance(llm, ChatGoogleGenerativeAI):
+        # ChatGoogleGenerativeAI or ChatOllama does not support the "parallel_tool_calls" keyword
+        if not isinstance(llm, ChatGoogleGenerativeAI) and not isinstance(llm, ChatOllama):
             llm_bind_tools_kwargs["parallel_tool_calls"] = False
 
         llm = llm.bind_tools(**llm_bind_tools_kwargs)
