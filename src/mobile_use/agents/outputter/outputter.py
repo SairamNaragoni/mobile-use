@@ -30,7 +30,7 @@ async def outputter(output_config: OutputConfig, graph_output: State) -> dict:
         else None,
     )
 
-    messages: list[BaseMessage] = [SystemMessage(content=system_message)]
+    messages: list[BaseMessage] = [HumanMessage(content=system_message)]
 
     if output_config.output_description:
         messages.append(HumanMessage(content=output_config.output_description))

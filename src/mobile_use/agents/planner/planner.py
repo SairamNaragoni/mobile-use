@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from jinja2 import Template
-from langchain_core.messages import SystemMessage
+from langchain_core.messages import SystemMessage, HumanMessage
 from mobile_use.agents.planner.types import PlannerOutput, Subgoal, SubgoalStatus
 from mobile_use.agents.planner.utils import one_of_them_is_failure
 from mobile_use.context import get_device_context
@@ -33,7 +33,7 @@ async def planner_node(state: State):
         agent_thoughts="\n".join(state.agents_thoughts),
     )
     messages = [
-        SystemMessage(content=system_message),
+        HumanMessage(content=system_message),
     ]
 
     llm = get_llm(agent_node="planner")
