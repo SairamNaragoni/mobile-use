@@ -51,8 +51,7 @@ async def executor_node(state: State):
 
     llm = get_llm(agent_node="executor").bind_tools(
         tools=get_tools_from_wrappers(EXECUTOR_WRAPPERS_TOOLS),
-        tool_choice="auto",
-        parallel_tool_calls=False,
+        tool_choice="auto"
     )
     response = await llm.ainvoke(messages)
 
