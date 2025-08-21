@@ -5,6 +5,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
 from mobile_use.config import LLM, AgentNode, settings
 from mobile_use.llm_config_context import get_llm_config_context
+from langchain_ollama import ChatOllama
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +59,15 @@ def get_grok_llm(model_name: str, temperature: float = 1) -> ChatOpenAI:
     )
     return client
 
+def get_ollama_llm(model_name: str, temperature: float = 1) -> ChatOllama:
+    base_url = getattr(settings, "OLLAMA_BASE_URL", "http://localhost:11434")
+    client = ChatOllama(
+        model=model_name,
+        temperature=temperature,
+        base_url=base_url,
+    )
+    return client
+
 
 def get_llm(
     agent_node: Optional[AgentNode] = None,
@@ -81,6 +91,8 @@ def get_llm(
         return get_openrouter_llm(llm.model, temperature)
     elif llm.provider == "xai":
         return get_grok_llm(llm.model, temperature)
+    elif llm.provider == "ollama":
+        return get_ollama_llm(llm.model, temperature)
     else:
         raise ValueError(f"Unsupported provider: {llm.provider}")
 

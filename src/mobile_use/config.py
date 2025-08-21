@@ -24,6 +24,8 @@ class Settings(BaseSettings):
 
     DEVICE_SCREEN_API_BASE_URL: Optional[str] = None
     DEVICE_HARDWARE_BRIDGE_BASE_URL: Optional[str] = None
+    ADB_HOST: Optional[str] = None
+    ADB_PORT: Optional[int] = None
 
     model_config = {"env_file": ".env", "extra": "ignore"}
 
@@ -84,7 +86,7 @@ def record_events(output_path: str | None, events: Union[list[str], BaseModel, A
 
 ### LLM Configuration
 
-LLMProvider = Literal["openai", "google", "openrouter", "xai"]
+LLMProvider = Literal["openai", "google", "openrouter", "xai", "ollama"]
 AgentNode = Literal["planner", "orchestrator", "cortex", "executor"]
 
 ROOT_DIR = Path(__file__).parent.parent.parent
@@ -188,6 +190,8 @@ def validate_llm_config(llm_config: LLMConfig):
             case "xai":
                 if not settings.XAI_API_KEY:
                     raise Exception(f"{agent_node} requires XAI_API_KEY in .env")
+            case "ollama":
+                pass
 
 
 def initialize_llm_config() -> LLMConfig:
