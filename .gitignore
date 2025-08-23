@@ -6,4 +6,3 @@ __pycache__
 
 # User config
 llm-config.override.jsonc
-uv.lock
